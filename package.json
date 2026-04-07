@@ -1,11 +1,13 @@
 {
-  "name": "unique-foliage",
+  "name": "trending-plants-australia",
   "version": "1.0.0",
   "private": true,
-  "description": "unique-foliage",
+  "description": "Trending Plants Australia — Indoor Plant Community",
   "author": "jeffpdavies",
   "keywords": [
-    "gatsby"
+    "gatsby",
+    "plants",
+    "australia"
   ],
   "scripts": {
     "develop": "gatsby develop",
@@ -15,17 +17,13 @@
     "clean": "gatsby clean"
   },
   "dependencies": {
-    "@mdx-js/react": "^3.0.0",
     "autoprefixer": "^10.4.17",
     "gatsby": "^5.13.2",
-    "gatsby-plugin-google-gtag": "^5.13.1",
     "gatsby-plugin-image": "^3.13.1",
-    "gatsby-plugin-mdx": "^5.13.1",
     "gatsby-plugin-postcss": "^6.13.1",
     "gatsby-plugin-sharp": "^5.13.1",
     "gatsby-plugin-sitemap": "^6.13.1",
     "gatsby-source-filesystem": "^5.13.1",
-    "gatsby-source-wordpress": "^7.13.2",
     "gatsby-transformer-sharp": "^5.13.1",
     "postcss": "^8.4.33",
     "react": "^18.2.0",
