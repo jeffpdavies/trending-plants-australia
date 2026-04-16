@@ -28,6 +28,43 @@ const filterButtonStyles = {
 
 const inactiveStyle = "bg-gray-100 text-gray-600 hover:bg-gray-200"
 
+const PlantTile = ({ plant, onOpen }) => (
+  <button
+    onClick={() => onOpen(plant)}
+    className="group text-left rounded-xl overflow-hidden shadow-sm hover:shadow-lg transition-all hover:-translate-y-0.5 focus:outline-none focus:ring-2 focus:ring-green-500 bg-white"
+  >
+    {/* Image / Placeholder */}
+    <div
+      className="w-full aspect-square flex items-center justify-center relative overflow-hidden"
+      style={{ backgroundColor: plant.placeholderColour }}
+    >
+      {plant.hasImage && plant.imageUrl ? (
+        <img
+          src={plant.imageUrl}
+          alt={plant.name}
+          className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
+        />
+      ) : (
+        <div className="text-center p-3">
+          <div className="text-4xl mb-1">🌿</div>
+          <p className="text-xs font-medium text-gray-600 opacity-70">Add photo</p>
+        </div>
+      )}
+      {/* Category badge */}
+      <span className={`absolute top-2 left-2 text-xs font-semibold px-2 py-0.5 rounded-full border ${categoryColourMap[plant.category]}`}>
+        {plant.category}
+      </span>
+    </div>
+
+    {/* Name */}
+    <div className="p-3">
+      <p className="text-xs font-semibold text-gray-800 leading-tight line-clamp-2">
+        {plant.name}
+      </p>
+    </div>
+  </button>
+)
+
 const GalleryPage = () => {
   const [activeFilter, setActiveFilter] = useState("All")
   const [lightbox, setLightbox] = useState(null)
@@ -35,6 +72,11 @@ const GalleryPage = () => {
   const filtered = useMemo(
     () => activeFilter === "All" ? gallery : gallery.filter(p => p.category === activeFilter),
     [activeFilter]
+  )
+
+  const grouped = useMemo(
+    () => categories.map(cat => ({ category: cat, plants: gallery.filter(p => p.category === cat) })),
+    []
   )
 
   return (
@@ -81,45 +123,34 @@ const GalleryPage = () => {
       {/* Gallery Grid */}
       <section className="py-10 px-4 bg-gray-50 min-h-screen">
         <div className="max-w-7xl mx-auto">
-          <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-4">
-            {filtered.map(plant => (
-              <button
-                key={plant.id}
-                onClick={() => setLightbox(plant)}
-                className="group text-left rounded-xl overflow-hidden shadow-sm hover:shadow-lg transition-all hover:-translate-y-0.5 focus:outline-none focus:ring-2 focus:ring-green-500 bg-white"
-              >
-                {/* Image / Placeholder */}
-                <div
-                  className="w-full aspect-square flex items-center justify-center relative overflow-hidden"
-                  style={{ backgroundColor: plant.placeholderColour }}
-                >
-                  {plant.hasImage && plant.imageUrl ? (
-                    <img
-                      src={plant.imageUrl}
-                      alt={plant.name}
-                      className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
-                    />
-                  ) : (
-                    <div className="text-center p-3">
-                      <div className="text-4xl mb-1">🌿</div>
-                      <p className="text-xs font-medium text-gray-600 opacity-70">Add photo</p>
-                    </div>
-                  )}
-                  {/* Category badge */}
-                  <span className={`absolute top-2 left-2 text-xs font-semibold px-2 py-0.5 rounded-full border ${categoryColourMap[plant.category]}`}>
-                    {plant.category}
-                  </span>
+          {activeFilter === "All" ? (
+            // Grouped by category
+            <div className="space-y-12">
+              {grouped.map(({ category, plants }) => (
+                <div key={category}>
+                  <div className="flex items-center gap-4 mb-6">
+                    <h2 className="text-2xl font-bold text-gray-800">{category}</h2>
+                    <span className={`text-xs font-semibold px-3 py-1 rounded-full border ${categoryColourMap[category]}`}>
+                      {plants.length} plants
+                    </span>
+                    <div className="flex-1 h-px bg-gray-200" />
+                  </div>
+                  <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-4">
+                    {plants.map(plant => (
+                      <PlantTile key={plant.id} plant={plant} onOpen={setLightbox} />
+                    ))}
+                  </div>
                 </div>
-
-                {/* Name */}
-                <div className="p-3">
-                  <p className="text-xs font-semibold text-gray-800 leading-tight line-clamp-2">
-                    {plant.name}
-                  </p>
-                </div>
-              </button>
-            ))}
-          </div>
+              ))}
+            </div>
+          ) : (
+            // Flat filtered view
+            <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-4">
+              {filtered.map(plant => (
+                <PlantTile key={plant.id} plant={plant} onOpen={setLightbox} />
+              ))}
+            </div>
+          )}
         </div>
       </section>
 
