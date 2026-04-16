@@ -53,6 +53,11 @@ const AdminPage = () => {
   const [uploadError, setUploadError] = useState(null)
   const [skippedCount, setSkippedCount] = useState(0)
   const fileInputRef = useRef(null)
+  // Track every created blob URL so we can revoke them all on true unmount.
+  // Using a ref (not state) avoids triggering re-renders and — critically —
+  // avoids the React Strict Mode double-effect bug that would revoke URLs
+  // before the upload runs.
+  const createdUrlsRef = useRef([])
 
   // Reset upload status whenever the list changes
   useEffect(() => {
@@ -60,12 +65,12 @@ const AdminPage = () => {
     setUploadError(null)
   }, [uploads])
 
-  // Revoke object URLs on cleanup
+  // Revoke all blob URLs only on actual unmount, not on every uploads change.
   useEffect(() => {
     return () => {
-      uploads.forEach(u => URL.revokeObjectURL(u.objectUrl))
+      createdUrlsRef.current.forEach(url => URL.revokeObjectURL(url))
     }
-  }, [uploads])
+  }, [])
 
   // ── file ingestion ──────────────────────────────────────────────────────────
 
@@ -75,13 +80,11 @@ const AdminPage = () => {
     const skipped = files.length - images.length
     if (skipped > 0) setSkippedCount(s => s + skipped)
 
-    const newEntries = images.map(file => ({
-      id: makeId(),
-      file,
-      objectUrl: URL.createObjectURL(file),
-      selectedCategory: "",
-      selectedName: "",
-    }))
+    const newEntries = images.map(file => {
+      const objectUrl = URL.createObjectURL(file)
+      createdUrlsRef.current.push(objectUrl)
+      return { id: makeId(), file, objectUrl, selectedCategory: "", selectedName: "" }
+    })
     setUploads(prev => [...prev, ...newEntries])
   }, [])
 
