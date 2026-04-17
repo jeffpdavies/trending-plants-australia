@@ -3,6 +3,7 @@ import Layout from "../components/Layout"
 import Hero from "../components/Hero"
 import Stats from "../components/Stats"
 import Features from "../components/Features"
+import PlantFinderSection from "../components/PlantFinderSection"
 import EmailCapture from "../components/EmailCapture"
 import CommunitySection from "../components/CommunitySection"
 
@@ -12,6 +13,7 @@ const IndexPage = () => {
       <Hero />
       <Stats />
       <Features />
+      <PlantFinderSection />
       <EmailCapture />
       <CommunitySection />
     </Layout>

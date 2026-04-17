@@ -4,7 +4,14 @@
 
 const categories = ["Philodendron", "Monstera", "Anthurium", "Syngonium", "Epipremnum", "Alocasia"]
 
-const plantNames = {
+// Map plant display names to their static image paths.
+// Add entries here after saving images to /static/gallery/.
+// The admin tool at /admin generates this block for you.
+export const imageMap = {
+  // "Monstera Thai Constellation": "/gallery/monstera-thai-constellation.jpg",
+}
+
+export const plantNames = {
   Philodendron: [
     "Philodendron Pink Princess",
     "Philodendron Brasil",
@@ -140,12 +147,9 @@ for (const category of categories) {
       id: id++,
       name,
       category,
-      // Placeholder background colour — replace imageUrl with real photo path
-      // e.g. imageUrl: "/gallery/my-photo.jpg"
-      imageUrl: null,
+      imageUrl: imageMap[name] || null,
       placeholderColour: colours[i % colours.length],
-      // Set to true and add imageUrl once you have real photos
-      hasImage: false,
+      hasImage: !!imageMap[name],
     })
   })
 }
