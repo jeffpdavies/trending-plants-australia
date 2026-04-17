@@ -40,8 +40,10 @@ async function handler(req, res) {
       ],
     })
 
-    const text = response.content[0].text.trim()
-    const parsed = JSON.parse(text)
+    const raw = response.content[0].text.trim()
+    const jsonMatch = raw.match(/\{[\s\S]*\}/)
+    if (!jsonMatch) throw new Error("No JSON in response")
+    const parsed = JSON.parse(jsonMatch[0])
 
     const validConfidence = ["High", "Medium", "Low"]
     const result = {
