@@ -29,6 +29,14 @@ const ContactPage = () => {
 
   return (
     <Layout>
+      {/* Hidden form for Netlify build-time detection */}
+      <form name="contact" data-netlify="true" netlify-honeypot="bot-field" hidden>
+        <input type="text" name="name" />
+        <input type="email" name="email" />
+        <textarea name="message" />
+        <input type="hidden" name="bot-field" />
+      </form>
+
       <section className="bg-gradient-to-br from-green-50 to-emerald-100 py-16 px-4 text-center">
         <h1 className="text-4xl md:text-5xl font-bold text-gray-900 mb-4">Get in Touch</h1>
         <p className="text-gray-600 text-lg max-w-xl mx-auto">
