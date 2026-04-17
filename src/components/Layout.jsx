@@ -1,6 +1,7 @@
 import * as React from "react"
 import Header from "./Header"
 import Footer from "./Footer"
+import FloatingPlantID from "./FloatingPlantID"
 
 const Layout = ({ children }) => {
   return (
@@ -10,6 +11,7 @@ const Layout = ({ children }) => {
         {children}
       </main>
       <Footer />
+      <FloatingPlantID />
     </div>
   )
 }
