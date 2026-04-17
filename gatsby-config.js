@@ -13,6 +13,13 @@ module.exports = {
     },
   },
   plugins: [
+    {
+      resolve: "gatsby-plugin-google-gtag",
+      options: {
+        trackingIds: ["G-Y5MQ05GLE6"],
+        pluginConfig: { head: true },
+      },
+    },
     "gatsby-plugin-image",
     "gatsby-plugin-sharp",
     "gatsby-transformer-sharp",
